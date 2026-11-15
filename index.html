@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yapılacaklar Listesi</title>
+  <style>
+    /* 1. Sayfa Arka Planı(Hafif Gradyan) */
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 60px;
+      margin: 0;
+    }
+
+    /* 2. Ana Kart */
+    .kutu {
+      background-color: #ffffff;
+      width: 360px;
+      max-width: 92%;
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+    }
+
+    h2 {
+      text-align: center;
+      color: #1f2937;
+      margin-top: 0;
+      margin-bottom: 20px;
+    }
+
+    /* 3. Yazı Kutusu ve Ekran Butonu */
+
+    .giris-alani {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    input {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    input:focus {
+      border-color: #4b5563;
+    }
+
+    button {
+      padding: 12px 18px;
+      background-color: #374151;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background-color: #1f2937;
+    }
+
+    /* Boş Giriş Uyarısı */
+    .uyari {
+      display: none;
+      background-color: #fee2e2;
+      color: #dc2626;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    /* 4.Görev Listesi */
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    li {
+      background-color: #f9fafb;
+      padding: 12px 15px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid #f3f4f6;
+      transition: 0.2s;
+    }
+
+    li:hover {
+      background-color: #f3f4f6;
+    }
+
+    /* Tıklanınca üstü çizili görünüm */
+    .tamamlandi {
+      text-decoration: line-through;
+      color: #9ca3af;
+    }
+
+    /* Sil Butonu */
+    .sil-btn {
+      background-color: #fee2e2;
+      color: #dc2626;
+      padding: 6px 10px;
+      font-size: 12px;
+      border-radius: 8px;
+    }
+
+    .sil-btn:hover {
+      background-color: #fecaca;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="kutu">
+    <h2>Yapılacaklar</h2>
+
+    <div id="uyariMesaji" class="uyari">Lütfen bir görev yaz!</div>
+
+    <div class="giris-alani">
+      <input type="text" id="gorevInput" placeholder="Görev yaz...">
+      <button onclick="gorevEkle()">Ekle</button>
+    </div>
+
+    <ul id="gorevListesi">
+      <li>
+        <span style="cursor: pointer;" onclick="this.classList.toggle(tamamlandi)">HTML ve CSS tekrar yap</span>
+        <button class="sil-btn" onclick="this.parentElement.remove()">Sil</button>
+      </li>
+      <li>
+        <span style="cursor: pointer;" class="tamamlandi" onclick="this.classList.toggle('tamamlandi')">Portfolyo
+          sayfasını düzenle</span>
+        <button class="sil-btn" onclick="this.parentElement.remove()">Sil</button>
+      </li>
+    </ul>
+  </div>
+
+  <script>
+    // Enter tuşuna basıldığında da görev ekle
+    document.getElementById("gorevInput").addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        gorevEkle();
+      }
+    });
+
+    function gorevEkle() {
+      let input = document.getElementById("gorevInput");
+      let uyari = document.getElementById("uyariMesaji");
+      let metin = input.value.trim();
+
+
+      if (metin === "") {
+        uyari.style.display = "block";
+        return;
+      };
+
+      uyari.style.display = "none";
+
+      // Yeni liste elemanı oluştur
+      let li = document.createElement("li");
+
+      // Görev yazısı
+      let span = document.createElement("span");
+      span.textContent = metin;
+      span.style.Cursor = "pointer";
+      span.onclick = function () {
+        span.classList.toggle("tamamlandi");
+      };
+
+      // Silme butonu
+      let silBtn = document.createElement("button");
+      silBtn.textContent = "Sil";
+      silBtn.className = "sil-btn";
+      silBtn.onclick = function () {
+        li.remove();
+      };
+
+      // Elemanları birleştir ve listeye ekle
+      li.appendChild(span);
+      li.appendChild(silBtn);
+      document.getElementById("gorevListesi").appendChild(li);
+
+      // Kutuyu temizle
+      input.value = "";
+    }
+  </script>
+
+</body>
+
+</html>
